@@ -1,0 +1,65 @@
+<div class="users-page">
+  <h1>Пользователи</h1>
+
+  @if (loading()) {
+    <div class="loading">Загрузка...</div>
+  } @else if (users().length === 0) {
+    <div class="empty-state">
+      <p>Пользователей пока нет</p>
+    </div>
+  } @else {
+    <div class="users-table card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Дата регистрации</th>
+            @if (authService.isAdmin()) {
+              <th>Действия</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users(); track user.id) {
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>
+                <a [routerLink]="['/users', user.id]">{{ user.name }}</a>
+              </td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span
+                  class="badge badge-role"
+                  [class.badge-admin]="user.role === 'admin'"
+                  [class.badge-pm]="user.role === 'project_manager'"
+                  [class.badge-user]="user.role === 'user'"
+                >
+                  {{ user.role }}
+                </span>
+              </td>
+              <td>{{ user.registrationDate | date: 'dd.MM.yyyy' }}</td>
+              @if (authService.isAdmin()) {
+                <td>
+                  <div class="role-actions">
+                    <select
+                      [value]="user.role"
+                      (change)="changeRole(user, $any($event.target).value)"
+                      class="form-control-sm"
+                    >
+                      <option value="user">User</option>
+                      <option value="project_manager">Project Manager</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </div>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

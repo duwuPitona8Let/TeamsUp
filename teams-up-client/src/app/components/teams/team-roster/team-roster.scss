@@ -1,0 +1,300 @@
+.roster-page {
+  padding: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1.5rem;
+
+  a {
+    color: #667eea;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.team-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: white;
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+
+  .hero-info {
+    h1 {
+      margin: 0 0 0.5rem;
+      color: #333;
+    }
+
+    p {
+      margin: 0;
+      color: #666;
+    }
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+}
+
+.status-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  &.active {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  &.closed {
+    background: #f8d7da;
+    color: #721c24;
+  }
+}
+
+.progress-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.progress-value {
+  font-weight: 700;
+  color: #333;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.label-filled {
+  color: #28a745;
+}
+
+.label-vacant {
+  color: #ffc107;
+}
+
+section {
+  margin-bottom: 2rem;
+
+  h2 {
+    margin: 0 0 1rem;
+    color: #333;
+    font-size: 1.15rem;
+  }
+}
+
+.members-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.member-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1;
+}
+
+.member-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.member-email {
+  font-size: 0.82rem;
+  color: #888;
+}
+
+.member-role {
+  font-size: 0.82rem;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.joined-date {
+  font-size: 0.8rem;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.vacancies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vacancy-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fffbf0;
+  border: 1px dashed #ffc107;
+  border-radius: 10px;
+  padding: 0.85rem 1.25rem;
+}
+
+.vacancy-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffeeba;
+  color: #856404;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.vacancy-role {
+  font-weight: 500;
+  color: #444;
+  flex: 1;
+}
+
+.vacancy-label {
+  font-size: 0.82rem;
+  color: #856404;
+  background: #ffeeba;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
+.btn {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+
+  &.btn-sm {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  &.btn-primary {
+    background: #667eea;
+    color: white;
+
+    &:hover {
+      background: #5a6fd6;
+    }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    border: 1px solid #667eea;
+    color: #667eea;
+
+    &:hover {
+      background: #667eea;
+      color: white;
+    }
+  }
+
+  &.btn-apply {
+    background: transparent;
+    border: 1px solid #ffc107;
+    color: #856404;
+    margin-left: auto;
+
+    &:hover {
+      background: #ffc107;
+      color: #333;
+    }
+  }
+}

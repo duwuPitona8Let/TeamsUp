@@ -1,0 +1,150 @@
+<div class="team-detail-page">
+  @if (loading()) {
+    <div class="loading">Загрузка...</div>
+  } @else if (team()) {
+    <div class="breadcrumb"><a routerLink="/teams">Команды</a> / {{ team()!.name }}</div>
+
+    <div class="team-header">
+      <div>
+        <h1>{{ team()!.name }}</h1>
+        <p class="description">{{ team()!.description || 'Описание отсутствует' }}</p>
+      </div>
+      <div class="badges">
+        <span
+          class="badge"
+          [class.badge-active]="team()!.status === 'active'"
+          [class.badge-closed]="team()!.status === 'closed'"
+        >
+          {{ team()!.status }}
+        </span>
+        <span class="date">Создана: {{ team()!.creationDate | date: 'dd.MM.yyyy' }}</span>
+      </div>
+    </div>
+
+    <div class="actions-bar">
+      <a [routerLink]="['/teams', team()!.id, 'edit']" class="btn btn-primary">Редактировать</a>
+      <a [routerLink]="['/teams', team()!.id, 'roster']" class="btn btn-secondary">Состав команды</a>
+      <a [routerLink]="['/teams', team()!.id, 'stats']" class="btn btn-secondary">Статистика</a>
+      <button class="btn btn-secondary" (click)="showAssignForm.set(!showAssignForm())">
+        {{ showAssignForm() ? 'Отмена' : 'Назначить участника' }}
+      </button>
+    </div>
+
+    @if (showAssignForm()) {
+      <div class="assign-form card">
+        <h3>Назначить участника</h3>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              [checked]="isVacantPosition()"
+              (change)="isVacantPosition.set($any($event.target).checked)"
+            />
+            Вакантная позиция (без назначения конкретного пользователя)
+          </label>
+        </div>
+
+        @if (!isVacantPosition()) {
+          <div class="form-row">
+            <app-user-search
+              placeholder="Введите имя или email..."
+              (selectedUser)="newAssignmentUserId.set($event?.id || null)"
+            />
+            <select class="form-control" [(ngModel)]="newAssignmentRole">
+              <option value="developer">Разработчик</option>
+              <option value="designer">Дизайнер</option>
+              <option value="tester">Тестировщик</option>
+              <option value="analyst">Аналитик</option>
+            </select>
+            <button class="btn btn-primary" (click)="createAssignment()">Назначить</button>
+          </div>
+        } @else {
+          <div class="form-row">
+            <select class="form-control" [(ngModel)]="newAssignmentRole">
+              <option value="developer">Разработчик</option>
+              <option value="designer">Дизайнер</option>
+              <option value="tester">Тестировщик</option>
+              <option value="analyst">Аналитик</option>
+            </select>
+            <button class="btn btn-primary" (click)="createAssignment()">Создать вакансию</button>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="members-section card">
+      <h2>Участники команды</h2>
+      @if (assignments().length === 0) {
+        <p class="empty">В команде пока нет участников</p>
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Пользователь</th>
+              <th>Роль</th>
+              <th>Дата назначения</th>
+              <th>Статус</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (assignment of assignments(); track assignment.id) {
+              <tr>
+                <td>
+                  @if (assignment.isVacant || !assignment.user) {
+                    <span class="vacant-badge">Вакансия</span>
+                  } @else {
+                    {{ assignment.user?.name || 'User #' + assignment.userId }}
+                  }
+                </td>
+                <td>
+                  <span class="badge badge-role">{{ assignment.role }}</span>
+                </td>
+                <td>{{ assignment.assignmentDate | date: 'dd.MM.yyyy' }}</td>
+                <td>
+                  @if (assignment.isVacant) {
+                    <span class="badge badge-vacant">Вакантно</span>
+                  } @else {
+                    <span class="badge badge-assigned">Назначен</span>
+                  }
+                </td>
+                <td>
+                  @if (assignment.isVacant && editingVacancyId() === assignment.id) {
+                    <div class="edit-vacancy-form">
+                      <app-user-search
+                        placeholder="Поиск..."
+                        (selectedUser)="newAssignmentUserId.set($event?.id || null)"
+                      />
+                      <button
+                        class="btn btn-sm btn-primary"
+                        (click)="assignUserToVacancy(assignment.id)"
+                      >
+                        Назначить
+                      </button>
+                      <button class="btn btn-sm btn-secondary" (click)="cancelEditingVacancy()">
+                        Отмена
+                      </button>
+                    </div>
+                  } @else {
+                    <button class="btn btn-sm btn-danger" (click)="deleteAssignment(assignment.id)">
+                      Удалить
+                    </button>
+                    @if (assignment.isVacant) {
+                      <button
+                        class="btn btn-sm btn-outline"
+                        (click)="startEditingVacancy(assignment)"
+                      >
+                        Назначить
+                      </button>
+                    }
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  }
+</div>

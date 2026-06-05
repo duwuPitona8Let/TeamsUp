@@ -1,0 +1,172 @@
+<div class="stats-page">
+  @if (loading()) {
+    <div class="loading">Загрузка статистики...</div>
+  } @else if (stats()) {
+    <div class="breadcrumb">
+      <a routerLink="/teams">Команды</a> /
+      <a [routerLink]="['/teams', stats()!.team.id]">{{ stats()!.team.name }}</a> /
+      Статистика
+    </div>
+
+    <div class="page-header">
+      <div>
+        <h1>{{ stats()!.team.name }}</h1>
+        <p class="subtitle">Аналитика по команде</p>
+      </div>
+      <div class="header-actions">
+        <a [routerLink]="['/teams', stats()!.team.id, 'roster']" class="btn btn-outline">Состав</a>
+        <a [routerLink]="['/teams', stats()!.team.id]" class="btn btn-primary">Управление</a>
+      </div>
+    </div>
+
+    <!-- Ключевые метрики -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-icon">👥</span>
+        <div class="metric-body">
+          <span class="metric-value">{{ stats()!.positions.total }}</span>
+          <span class="metric-label">Позиций всего</span>
+        </div>
+      </div>
+      <div class="metric-card accent-green">
+        <span class="metric-icon">✓</span>
+        <div class="metric-body">
+          <span class="metric-value">{{ stats()!.positions.filled }}</span>
+          <span class="metric-label">Занято</span>
+        </div>
+      </div>
+      <div class="metric-card accent-yellow">
+        <span class="metric-icon">⋯</span>
+        <div class="metric-body">
+          <span class="metric-value">{{ stats()!.positions.vacant }}</span>
+          <span class="metric-label">Вакантно</span>
+        </div>
+      </div>
+      <div class="metric-card accent-purple">
+        <span class="metric-icon">📄</span>
+        <div class="metric-body">
+          <span class="metric-value">{{ stats()!.applications.total }}</span>
+          <span class="metric-label">Откликов</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Укомплектованность -->
+      <div class="card">
+        <h2>Укомплектованность</h2>
+        <div class="completion-circle-wrap">
+          <svg viewBox="0 0 120 120" class="circle-chart">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#eee" stroke-width="12"/>
+            <circle
+              cx="60" cy="60" r="50" fill="none"
+              stroke="#667eea" stroke-width="12"
+              [attr.stroke-dasharray]="stats()!.positions.completionRate * 3.14 + ' 314'"
+              stroke-dashoffset="78.5"
+              stroke-linecap="round"
+            />
+          </svg>
+          <div class="circle-label">
+            <span class="circle-value">{{ stats()!.positions.completionRate }}%</span>
+            <span class="circle-sub">заполнено</span>
+          </div>
+        </div>
+        <div class="completion-detail">
+          <div class="detail-row">
+            <span class="dot dot-filled"></span>
+            <span>Занято — {{ stats()!.positions.filled }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="dot dot-vacant"></span>
+            <span>Вакантно — {{ stats()!.positions.vacant }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Воронка откликов -->
+      <div class="card">
+        <h2>Воронка откликов</h2>
+        @if (stats()!.applications.total === 0) {
+          <div class="empty-chart">Откликов ещё нет</div>
+        } @else {
+          <div class="funnel">
+            <div class="funnel-row">
+              <span class="funnel-label">Всего подано</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar bar-total" style="width: 100%">
+                  {{ stats()!.applications.total }}
+                </div>
+              </div>
+            </div>
+            <div class="funnel-row">
+              <span class="funnel-label">На рассмотрении</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar bar-pending"
+                  [style.width.%]="funnelWidth(stats()!.applications.pending, stats()!.applications.total)">
+                  {{ stats()!.applications.pending }}
+                </div>
+              </div>
+            </div>
+            <div class="funnel-row">
+              <span class="funnel-label">Принято</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar bar-accepted"
+                  [style.width.%]="funnelWidth(stats()!.applications.accepted, stats()!.applications.total)">
+                  {{ stats()!.applications.accepted }}
+                </div>
+              </div>
+            </div>
+            <div class="funnel-row">
+              <span class="funnel-label">Отклонено</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar bar-rejected"
+                  [style.width.%]="funnelWidth(stats()!.applications.rejected, stats()!.applications.total)">
+                  {{ stats()!.applications.rejected }}
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Разбивка по ролям -->
+    <div class="card">
+      <h2>Разбивка по ролям</h2>
+      @if (stats()!.roles.length === 0) {
+        <div class="empty-chart">Позиций ещё нет</div>
+      } @else {
+        <div class="roles-chart">
+          @for (r of stats()!.roles; track r.role) {
+            <div class="role-row">
+              <span class="role-name">{{ roleLabel(r.role) }}</span>
+              <div class="role-bars">
+                <div class="role-bar-bg">
+                  <div
+                    class="role-bar-fill"
+                    [style.width.%]="(r.total / maxRoleCount()) * 100"
+                    [style.background]="roleColor(r.role)"
+                  ></div>
+                  <div
+                    class="role-bar-filled"
+                    [style.width.%]="(r.filled / maxRoleCount()) * 100"
+                    [style.background]="roleColor(r.role)"
+                  ></div>
+                </div>
+              </div>
+              <div class="role-counts">
+                <span class="count-filled">{{ r.filled }} занято</span>
+                <span class="count-sep">/</span>
+                <span class="count-total">{{ r.total }} всего</span>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="roles-legend">
+          <span class="legend-item"><span class="legend-dot dot-filled"></span> Занято</span>
+          <span class="legend-item"><span class="legend-dot dot-vacant"></span> Вакантно</span>
+        </div>
+      }
+    </div>
+  }
+</div>

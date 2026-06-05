@@ -1,0 +1,77 @@
+<div class="recruiter-page">
+  <div class="page-header">
+    <div>
+      <h1>Панель рекрутера</h1>
+      <p class="subtitle">Отклики кандидатов на вакансии</p>
+    </div>
+    <a routerLink="/vacancies" class="btn btn-outline">← Список вакансий</a>
+  </div>
+
+  @if (pending() > 0) {
+    <div class="pending-banner">
+      <strong>{{ pending() }}</strong> {{ pending() === 1 ? 'новый отклик требует' : 'новых откликов требуют' }} рассмотрения
+    </div>
+  }
+
+  <div class="filter-bar">
+    <button class="filter-btn" [class.active]="filterStatus() === 'all'" (click)="filterStatus.set('all')">
+      Все ({{ applications().length }})
+    </button>
+    <button class="filter-btn" [class.active]="filterStatus() === 'pending'" (click)="filterStatus.set('pending')">
+      На рассмотрении ({{ pending() }})
+    </button>
+    <button class="filter-btn" [class.active]="filterStatus() === 'accepted'" (click)="filterStatus.set('accepted')">
+      Принятые
+    </button>
+    <button class="filter-btn" [class.active]="filterStatus() === 'rejected'" (click)="filterStatus.set('rejected')">
+      Отклонённые
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">Загрузка откликов...</div>
+  } @else if (filtered().length === 0) {
+    <div class="empty-state">
+      <p>Откликов нет</p>
+    </div>
+  } @else {
+    <div class="applications-list">
+      @for (app of filtered(); track app.id) {
+        <div class="application-card" [class.pending]="app.status === ApplicationStatus.PENDING"
+                                       [class.accepted]="app.status === ApplicationStatus.ACCEPTED"
+                                       [class.rejected]="app.status === ApplicationStatus.REJECTED">
+          <div class="app-header">
+            <div class="app-info">
+              <span class="candidate-name">{{ app.candidateName }}</span>
+              <span class="candidate-email">{{ app.candidateEmail }}</span>
+            </div>
+            <span class="status-badge status-{{ app.status }}">
+              @if (app.status === ApplicationStatus.PENDING) { На рассмотрении }
+              @else if (app.status === ApplicationStatus.ACCEPTED) { Принят }
+              @else { Отклонён }
+            </span>
+          </div>
+
+          <div class="app-vacancy">
+            <span class="role-tag">{{ roleLabel(app.assignment?.role ?? '') }}</span>
+            <span class="team-name">{{ app.assignment?.team?.name }}</span>
+            <span class="app-date">{{ app.createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+
+          @if (app.coverLetter) {
+            <div class="cover-letter">
+              <p>{{ app.coverLetter }}</p>
+            </div>
+          }
+
+          @if (app.status === ApplicationStatus.PENDING) {
+            <div class="app-actions">
+              <button class="btn btn-accept" (click)="accept(app.id)">Принять</button>
+              <button class="btn btn-reject" (click)="reject(app.id)">Отклонить</button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,38 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/dashboard">Teams-Up</a>
+  </div>
+
+  @if (authService.isAuthenticated()) {
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/teams" routerLinkActive="active">Команды</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/users" routerLinkActive="active">Пользователи</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/vacancies" routerLinkActive="active">Вакансии</a>
+      </li>
+      @if (authService.isAdmin() || authService.isProjectManager()) {
+        <li class="nav-item">
+          <a routerLink="/recruiter" routerLinkActive="active">Рекрутер</a>
+        </li>
+      }
+      @if (authService.isAdmin()) {
+        <li class="nav-item">
+          <a routerLink="/admin" routerLinkActive="active">Администрирование</a>
+        </li>
+      }
+    </ul>
+
+    <div class="navbar-user">
+      <span class="user-name">{{ authService.user()?.name }}</span>
+      <span class="user-role">{{ authService.user()?.role }}</span>
+      <button class="btn btn-logout" (click)="authService.logout()">Выйти</button>
+    </div>
+  }
+</nav>

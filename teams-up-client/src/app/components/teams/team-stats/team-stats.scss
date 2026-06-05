@@ -1,0 +1,335 @@
+.stats-page {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1.5rem;
+
+  a {
+    color: #667eea;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+
+  h1 { margin: 0 0 0.25rem; color: #333; }
+  .subtitle { margin: 0; color: #666; }
+  .header-actions { display: flex; gap: 0.5rem; }
+}
+
+// Метрики
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.metric-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-left: 4px solid #667eea;
+
+  &.accent-green  { border-left-color: #28a745; }
+  &.accent-yellow { border-left-color: #ffc107; }
+  &.accent-purple { border-left-color: #764ba2; }
+}
+
+.metric-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.metric-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #333;
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+// Двухколоночный layout
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin-bottom: 0;
+
+  h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.05rem;
+    color: #333;
+  }
+}
+
+.empty-chart {
+  text-align: center;
+  color: #aaa;
+  padding: 2rem 0;
+  font-size: 0.9rem;
+}
+
+// Круговой прогресс
+.completion-circle-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 1.25rem;
+}
+
+.circle-chart {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circle-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.circle-value {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.circle-sub {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.completion-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.dot-filled  { background: #667eea; }
+  &.dot-vacant  { background: #eee; border: 1px solid #ccc; }
+}
+
+// Воронка
+.funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.funnel-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.funnel-label {
+  font-size: 0.82rem;
+  color: #666;
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.funnel-bar-wrap {
+  flex: 1;
+  background: #f5f5f5;
+  border-radius: 6px;
+  height: 28px;
+  overflow: hidden;
+}
+
+.funnel-bar {
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: white;
+  min-width: 32px;
+  transition: width 0.5s ease;
+
+  &.bar-total   { background: #667eea; }
+  &.bar-pending { background: #ffc107; color: #333; }
+  &.bar-accepted{ background: #28a745; }
+  &.bar-rejected{ background: #dc3545; }
+}
+
+// Разбивка по ролям
+.roles-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.role-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.role-name {
+  width: 110px;
+  font-size: 0.88rem;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.role-bars {
+  flex: 1;
+  position: relative;
+  height: 24px;
+}
+
+.role-bar-bg {
+  position: relative;
+  height: 100%;
+  background: #f0f0f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.role-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  opacity: 0.25;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.role-bar-filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  opacity: 0.85;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.role-counts {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.count-filled { color: #28a745; font-weight: 600; }
+.count-sep    { color: #ccc; }
+.count-total  { color: #888; }
+
+.roles-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: #666;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+
+  &.dot-filled  { background: #667eea; opacity: 0.85; }
+  &.dot-vacant  { background: #667eea; opacity: 0.25; }
+}
+
+// Кнопки
+.btn {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+
+  &.btn-primary {
+    background: #667eea;
+    color: white;
+    &:hover { background: #5a6fd6; }
+  }
+
+  &.btn-outline {
+    background: transparent;
+    border: 1px solid #667eea;
+    color: #667eea;
+    &:hover { background: #667eea; color: white; }
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+}

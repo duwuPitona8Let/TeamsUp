@@ -1,0 +1,40 @@
+<div class="vacancies-page">
+  <div class="page-header">
+    <div>
+      <h1>Открытые вакансии</h1>
+      <p class="subtitle">Найдите подходящую роль в команде и откликнитесь</p>
+    </div>
+    @if (authService.isAdmin() || authService.isProjectManager()) {
+      <a routerLink="/recruiter" class="btn btn-outline">Панель рекрутера</a>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="loading">Загрузка вакансий...</div>
+  } @else if (vacancies().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <h3>Открытых вакансий нет</h3>
+      <p>Сейчас все позиции заняты. Загляните позже.</p>
+    </div>
+  } @else {
+    <div class="vacancies-grid">
+      @for (vacancy of vacancies(); track vacancy.id) {
+        <div class="vacancy-card">
+          <div class="vacancy-top">
+            <span class="role-badge">{{ roleLabel(vacancy.role) }}</span>
+            <span class="open-badge">Открыто</span>
+          </div>
+          <h3 class="team-name">{{ vacancy.team?.name }}</h3>
+          <p class="team-description">{{ vacancy.team?.description || 'Описание команды отсутствует' }}</p>
+          <div class="vacancy-meta">
+            <span>Команда создана: {{ vacancy.team?.creationDate | date: 'dd.MM.yyyy' }}</span>
+          </div>
+          <button class="btn btn-primary btn-apply" (click)="applyTo(vacancy)">
+            Откликнуться
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

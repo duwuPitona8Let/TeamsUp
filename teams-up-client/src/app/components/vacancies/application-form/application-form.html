@@ -1,0 +1,83 @@
+<div class="apply-page">
+  <div class="breadcrumb">
+    <a routerLink="/vacancies">Вакансии</a> / Отклик
+  </div>
+
+  @if (loading()) {
+    <div class="loading">Загрузка...</div>
+  } @else if (submitted()) {
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h2>Отклик отправлен!</h2>
+      <p>Мы получили вашу заявку. Рекрутер рассмотрит её и свяжется с вами по email.</p>
+      <a routerLink="/vacancies" class="btn btn-primary">Посмотреть другие вакансии</a>
+    </div>
+  } @else {
+    @if (vacancy()) {
+      <div class="vacancy-summary">
+        <span class="role-badge">{{ roleLabel(vacancy()!.role) }}</span>
+        <h2>{{ vacancy()!.team?.name }}</h2>
+        <p>{{ vacancy()!.team?.description || 'Описание команды отсутствует' }}</p>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="alert-error">{{ error() }}</div>
+    }
+
+    @if (vacancy()) {
+      <form class="form-card" (ngSubmit)="submit()">
+        <h3>Ваши данные</h3>
+
+        <div class="form-group">
+          <label for="name">Имя и фамилия *</label>
+          <input
+            id="name"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.candidateName"
+            name="candidateName"
+            placeholder="Иван Иванов"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            [(ngModel)]="form.candidateEmail"
+            name="candidateEmail"
+            placeholder="ivan@example.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="cover">Сопроводительное письмо</label>
+          <textarea
+            id="cover"
+            class="form-control"
+            [(ngModel)]="form.coverLetter"
+            name="coverLetter"
+            rows="5"
+            placeholder="Расскажите о себе, своём опыте и почему хотите попасть в эту команду..."
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/vacancies" class="btn btn-outline">Отмена</a>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="submitting() || !form.candidateName || !form.candidateEmail"
+          >
+            {{ submitting() ? 'Отправка...' : 'Отправить отклик' }}
+          </button>
+        </div>
+      </form>
+    }
+  }
+</div>

@@ -1,0 +1,231 @@
+.team-detail-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.breadcrumb {
+  margin-bottom: 1rem;
+  color: #888;
+
+  a {
+    color: #667eea;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+h1 {
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.description {
+  color: #666;
+  margin: 0;
+}
+
+.badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+
+  &.badge-active {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  &.badge-closed {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  &.badge-role {
+    background-color: #e7e3ea;
+    color: #5a4a6b;
+  }
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.actions-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.assign-form {
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+h2,
+h3 {
+  color: #333;
+  margin-top: 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-control {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.btn-primary {
+    background-color: #667eea;
+    color: white;
+
+    &:hover {
+      background-color: #5a6fd6;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+
+  &.btn-danger {
+    background-color: #dc3545;
+    color: white;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+
+  &.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f8f9fa;
+  }
+}
+
+.empty {
+  color: #888;
+  text-align: center;
+  padding: 2rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+
+  input[type='checkbox'] {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+  }
+}
+
+.vacant-badge {
+  color: #856404;
+  font-style: italic;
+}
+
+.badge {
+  &.badge-vacant {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  &.badge-assigned {
+    background-color: #d4edda;
+    color: #155724;
+  }
+}
+
+.edit-vacancy-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.form-control-sm {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  min-width: 150px;
+}

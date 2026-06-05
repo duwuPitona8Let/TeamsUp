@@ -1,0 +1,91 @@
+<div class="user-detail-page">
+  @if (loading()) {
+    <div class="loading">Загрузка...</div>
+  } @else if (user()) {
+    <div class="breadcrumb"><a routerLink="/users">Пользователи</a> / {{ user()!.name }}</div>
+
+    <div class="user-header card">
+      <div class="user-info">
+        <h1>{{ user()!.name }}</h1>
+        <p class="email">{{ user()!.email }}</p>
+        <span
+          class="badge badge-role"
+          [class.badge-admin]="user()!.role === 'admin'"
+          [class.badge-pm]="user()!.role === 'project_manager'"
+          [class.badge-user]="user()!.role === 'user'"
+        >
+          {{ user()!.role }}
+        </span>
+      </div>
+      @if (authService.user()?.id === user()!.id) {
+        <button class="btn btn-outline" (click)="toggleEdit()">
+          {{ isEditing() ? 'Отмена' : 'Редактировать' }}
+        </button>
+      }
+    </div>
+
+    @if (isEditing()) {
+      <div class="edit-form card">
+        <h3>Редактирование профиля</h3>
+        <div class="form-group">
+          <label for="name">Имя</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            [(ngModel)]="editName"
+            name="editName"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            [(ngModel)]="editEmail"
+            name="editEmail"
+          />
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" (click)="saveChanges()">Сохранить</button>
+        </div>
+      </div>
+    }
+
+    <div class="user-meta card">
+      <h2>Информация</h2>
+      <dl class="meta-list">
+        <dt>ID</dt>
+        <dd>{{ user()!.id }}</dd>
+
+        <dt>Дата регистрации</dt>
+        <dd>{{ user()!.registrationDate | date: 'dd.MM.yyyy HH:mm' }}</dd>
+      </dl>
+    </div>
+
+    <div class="teams-section card">
+      <h2>Команды пользователя</h2>
+      @if (teams().length === 0) {
+        <p class="empty">Пользователь не состоит в командах</p>
+      } @else {
+        <ul class="teams-list">
+          @for (team of teams(); track team.id) {
+            <li class="team-item">
+              <a [routerLink]="['/teams', team.id]">
+                <strong>{{ team.name }}</strong>
+                <span
+                  class="badge"
+                  [class.badge-active]="team.status === 'active'"
+                  [class.badge-closed]="team.status === 'closed'"
+                >
+                  {{ team.status }}
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</div>

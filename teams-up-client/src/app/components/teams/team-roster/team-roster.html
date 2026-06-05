@@ -1,0 +1,80 @@
+<div class="roster-page">
+  @if (loading()) {
+    <div class="loading">Загрузка...</div>
+  } @else if (team()) {
+    <div class="breadcrumb">
+      <a routerLink="/teams">Команды</a> /
+      <a [routerLink]="['/teams', team()!.id]">{{ team()!.name }}</a> /
+      Состав команды
+    </div>
+
+    <div class="team-hero">
+      <div class="hero-info">
+        <h1>{{ team()!.name }}</h1>
+        <p>{{ team()!.description || 'Описание отсутствует' }}</p>
+      </div>
+      <div class="hero-meta">
+        <span class="status-badge" [class.active]="team()!.status === TeamStatus.ACTIVE" [class.closed]="team()!.status === TeamStatus.CLOSED">
+          {{ team()!.status === TeamStatus.ACTIVE ? 'Активна' : 'Закрыта' }}
+        </span>
+        <a [routerLink]="['/teams', team()!.id]" class="btn btn-outline btn-sm">Управление</a>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-header">
+        <span>Укомплектованность команды</span>
+        <span class="progress-value">{{ filled().length }} / {{ assignments().length }}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progress()"></div>
+      </div>
+      <div class="progress-labels">
+        <span class="label-filled">{{ filled().length }} назначено</span>
+        <span class="label-vacant">{{ vacancies().length }} вакантно</span>
+      </div>
+    </div>
+
+    @if (filled().length > 0) {
+      <section class="members-section">
+        <h2>Участники команды</h2>
+        <div class="members-grid">
+          @for (a of filled(); track a.id) {
+            <div class="member-card">
+              <div class="avatar">{{ initials(a.user?.name ?? '?') }}</div>
+              <div class="member-info">
+                <span class="member-name">{{ a.user?.name ?? 'Неизвестно' }}</span>
+                <span class="member-email">{{ a.user?.email }}</span>
+                <span class="member-role">{{ roleLabel(a.role) }}</span>
+              </div>
+              <span class="joined-date">с {{ a.assignmentDate | date: 'dd.MM.yyyy' }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    @if (vacancies().length > 0) {
+      <section class="vacancies-section">
+        <h2>Открытые вакансии</h2>
+        <div class="vacancies-list">
+          @for (v of vacancies(); track v.id) {
+            <div class="vacancy-row">
+              <div class="vacancy-icon">?</div>
+              <span class="vacancy-role">{{ roleLabel(v.role) }}</span>
+              <span class="vacancy-label">Вакантно</span>
+              <a routerLink="/vacancies" class="btn btn-sm btn-apply">Посмотреть отклики →</a>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    @if (assignments().length === 0) {
+      <div class="empty-state">
+        <p>В команде ещё нет ни одной позиции.</p>
+        <a [routerLink]="['/teams', team()!.id]" class="btn btn-primary">Перейти к управлению</a>
+      </div>
+    }
+  }
+</div>

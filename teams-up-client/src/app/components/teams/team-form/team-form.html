@@ -1,0 +1,61 @@
+<div class="team-form-page">
+  <div class="breadcrumb">
+    <a routerLink="/teams">Команды</a> / {{ isEdit ? 'Редактирование' : 'Создание' }}
+  </div>
+
+  <div class="card">
+    <h1>{{ isEdit ? 'Редактирование команды' : 'Создание команды' }}</h1>
+
+    @if (error()) {
+      <div class="alert alert-danger">{{ error() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Название</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          [(ngModel)]="name"
+          name="name"
+          required
+          [disabled]="loading()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea
+          id="description"
+          class="form-control"
+          [(ngModel)]="description"
+          name="description"
+          rows="4"
+          [disabled]="loading()"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Статус</label>
+        <select
+          id="status"
+          class="form-control"
+          [(ngModel)]="status"
+          name="status"
+          [disabled]="loading()"
+        >
+          <option [value]="TeamStatus.ACTIVE">Active</option>
+          <option [value]="TeamStatus.CLOSED">Closed</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="loading()">
+          {{ isEdit ? 'Сохранить' : 'Создать' }}
+        </button>
+        <a routerLink="/teams" class="btn btn-secondary">Отмена</a>
+      </div>
+    </form>
+  </div>
+</div>

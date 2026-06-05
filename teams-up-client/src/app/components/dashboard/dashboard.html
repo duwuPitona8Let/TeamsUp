@@ -1,0 +1,76 @@
+<div class="dashboard">
+  <h1>Dashboard</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Команды</h3>
+      <p class="stat-value">{{ teams().length }}</p>
+      <a routerLink="/teams" class="btn btn-link">Посмотреть все →</a>
+    </div>
+
+    <div class="stat-card">
+      <h3>Пользователи</h3>
+      <p class="stat-value">{{ authService.isAdmin() ? users().length : '—' }}</p>
+      @if (authService.isAdmin()) {
+        <a routerLink="/users" class="btn btn-link">Посмотреть все →</a>
+      }
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="card">
+      <h2>Последние команды</h2>
+      @if (loading()) {
+        <p>Загрузка...</p>
+      } @else if (teams().length === 0) {
+        <p>Команд пока нет</p>
+      } @else {
+        <ul class="list">
+          @for (team of teams(); track team.id) {
+            <li class="list-item">
+              <a [routerLink]="['/teams', team.id]">
+                <strong>{{ team.name }}</strong>
+                <span
+                  class="badge"
+                  [class.badge-active]="team.status === 'active'"
+                  [class.badge-closed]="team.status === 'closed'"
+                >
+                  {{ team.status }}
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    @if (authService.isAdmin()) {
+      <div class="card">
+        <h2>Пользователи</h2>
+        <ul class="list">
+          @for (user of users(); track user.id) {
+            <li class="list-item">
+              <a [routerLink]="['/users', user.id]">
+                <strong>{{ user.name }}</strong>
+                <span class="text-muted">{{ user.email }}</span>
+                <span class="badge badge-role">{{ user.role }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+
+  <div class="quick-actions">
+    <h2>Быстрые действия</h2>
+    <div class="actions-grid">
+      @if (authService.isAdmin() || authService.isProjectManager()) {
+        <a routerLink="/teams/create" class="btn btn-primary">Создать команду</a>
+      }
+      @if (authService.isAdmin()) {
+        <a routerLink="/users" class="btn btn-secondary">Управление пользователями</a>
+      }
+    </div>
+  </div>
+</div>

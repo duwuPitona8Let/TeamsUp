@@ -1,0 +1,44 @@
+<div class="user-search-container" [class.focused]="focused()">
+  ">
+  <div class="search-input-wrapper">
+    <input
+      type="text"
+      class="search-input"
+      [placeholder]="placeholder()"
+      [(ngModel)]="searchQuery"
+      (input)="onInput($event)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+    @if (searchQuery()) {
+      <button class="clear-btn" type="button" (click)="clearSelection()">&times;</button>
+    }
+    @if (isLoading()) {
+      <span class="loading-spinner">⏳</span>
+    }
+  </div>
+
+  @if (showResults() && users().length > 0) {
+    <ul class="search-results">
+      @for (user of users(); track user.id) {
+        <li class="search-result-item" (click)="selectUser(user)">
+          <div class="user-info">
+            <span class="user-name">{{ user.name }}</span>
+            <span class="user-email">{{ user.email }}</span>
+          </div>
+          <span
+            class="user-role-badge"
+            [class.badge-admin]="user.role === 'admin'"
+            [class.badge-pm]="user.role === 'project_manager'"
+          >
+            {{ user.role }}
+          </span>
+        </li>
+      }
+    </ul>
+  }
+
+  @if (showResults() && users().length === 0 && searchQuery().length >= 2 && !isLoading()) {
+    <div class="no-results">Пользователи не найдены</div>
+  }
+</div>
