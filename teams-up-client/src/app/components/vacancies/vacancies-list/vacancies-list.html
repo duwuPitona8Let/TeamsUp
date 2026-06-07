@@ -9,6 +9,30 @@
     }
   </div>
 
+  @if (recommended().length > 0) {
+    <section class="recommended-section">
+      <h2 class="section-title">Рекомендуется для вас</h2>
+      <div class="vacancies-grid">
+        @for (vacancy of recommended(); track vacancy.id) {
+          <div class="vacancy-card">
+            <div class="vacancy-top">
+              <span class="role-badge">{{ roleLabel(vacancy.role) }}</span>
+              <span class="recommended-badge">Подходит вам</span>
+            </div>
+            <h3 class="team-name">{{ vacancy.team?.name }}</h3>
+            <p class="team-description">{{ vacancy.team?.description || 'Описание команды отсутствует' }}</p>
+            <div class="vacancy-meta">
+              <span>Команда создана: {{ vacancy.team?.creationDate | date: 'dd.MM.yyyy' }}</span>
+            </div>
+            <button class="btn btn-primary btn-apply" (click)="applyTo(vacancy)">
+              Откликнуться
+            </button>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
   @if (loading()) {
     <div class="loading">Загрузка вакансий...</div>
   } @else if (vacancies().length === 0) {

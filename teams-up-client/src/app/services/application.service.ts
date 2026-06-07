@@ -22,6 +22,10 @@ export class ApplicationService {
     return this.http.get<Vacancy[]>(`${this.apiUrl}/vacancies`);
   }
 
+  getRecommendedVacancies(): Observable<Vacancy[]> {
+    return this.http.get<Vacancy[]>(`${this.apiUrl}/vacancies/recommended`);
+  }
+
   submitApplication(dto: CreateApplicationDto): Observable<Application> {
     return this.http.post<Application>(`${this.apiUrl}/applications`, dto);
   }

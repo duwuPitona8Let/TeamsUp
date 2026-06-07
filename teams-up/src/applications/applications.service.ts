@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Application, ApplicationStatus } from '../entities/application.entity';
 import { Assignment } from '../entities/assignment.entity';
+import { User } from '../entities/user.entity';
 import { CreateApplicationDto } from '../dto';
 
 @Injectable()
@@ -23,6 +24,43 @@ export class ApplicationsService {
       where: { isVacant: true },
       relations: ['team'],
     });
+  }
+
+  async getRecommendedVacancies(user: User) {
+    // Roles from user's filled team positions
+    const userAssignments = await this.assignmentRepository.find({
+      where: { userId: user.id },
+    });
+    const knownRoles = new Set(userAssignments.map((a) => a.role));
+
+    // Roles from accepted applications matched by email
+    const acceptedApps = await this.applicationRepository.find({
+      where: { candidateEmail: user.email, status: ApplicationStatus.ACCEPTED },
+      relations: ['assignment'],
+    });
+    acceptedApps.forEach((app) => knownRoles.add(app.assignment.role));
+
+    // Vacancies the user already has a pending application for
+    const pendingApps = await this.applicationRepository.find({
+      where: { candidateEmail: user.email, status: ApplicationStatus.PENDING },
+    });
+    const appliedIds = new Set(pendingApps.map((a) => a.assignmentId));
+
+    const vacancies = await this.assignmentRepository.find({
+      where: { isVacant: true },
+      relations: ['team'],
+    });
+
+    return vacancies
+      .filter((v) => !appliedIds.has(v.id))
+      .map((v) => ({
+        vacancy: v,
+        score: (knownRoles.has(v.role) ? 3 : 0) + (v.team?.status === 'active' ? 1 : 0),
+      }))
+      .filter((s) => s.score >= 3)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4)
+      .map((s) => s.vacancy);
   }
 
   async apply(dto: CreateApplicationDto) {

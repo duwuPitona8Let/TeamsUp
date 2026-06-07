@@ -14,6 +14,7 @@ import { Vacancy } from '../../../models';
 })
 export class VacanciesList implements OnInit {
   vacancies = signal<Vacancy[]>([]);
+  recommended = signal<Vacancy[]>([]);
   loading = signal(true);
 
   constructor(
@@ -30,6 +31,13 @@ export class VacanciesList implements OnInit {
       },
       error: () => this.loading.set(false),
     });
+
+    if (this.authService.isAuthenticated()) {
+      this.applicationService.getRecommendedVacancies().subscribe({
+        next: (v) => this.recommended.set(v),
+        error: () => {},
+      });
+    }
   }
 
   applyTo(vacancy: Vacancy) {

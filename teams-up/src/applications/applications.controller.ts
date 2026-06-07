@@ -11,7 +11,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
-import { UserRole } from '../entities/user.entity';
+import { CurrentUser } from '../decorators/current-user.decorator';
+import { User, UserRole } from '../entities/user.entity';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from '../dto';
 
@@ -23,6 +24,13 @@ export class ApplicationsController {
   @Get('vacancies')
   getVacancies() {
     return this.applicationsService.getVacancies();
+  }
+
+  // Authenticated — personalized vacancy recommendations based on user history
+  @Get('vacancies/recommended')
+  @UseGuards(AuthGuard('jwt'))
+  getRecommendedVacancies(@CurrentUser() user: User) {
+    return this.applicationsService.getRecommendedVacancies(user);
   }
 
   // Public — submit application
